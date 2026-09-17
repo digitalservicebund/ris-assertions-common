@@ -1,0 +1,133 @@
+import com.diffplug.spotless.LineEnding
+import org.gradle.api.plugins.quality.Checkstyle
+
+plugins {
+  `java-library`
+  id("io.spring.dependency-management") version "1.1.7"
+  id("org.sonarqube") version "7.5.0.8588"
+  id("com.diffplug.spotless") version "8.10.2"
+  id("jacoco")
+  id("checkstyle")
+  `maven-publish`
+}
+
+repositories {
+  mavenCentral()
+}
+
+group = "de.bund.digitalservice.ris"
+version = System.getenv("RELEASE_VERSION") ?: "0.7.5"
+
+java {
+  toolchain {
+    languageVersion = JavaLanguageVersion.of(25)
+  }
+}
+
+dependencyManagement {
+  imports {
+    mavenBom("org.springframework.boot:spring-boot-dependencies:4.1.1")
+  }
+}
+
+dependencies {
+  api("org.assertj:assertj-core")
+  testImplementation("org.springframework.boot:spring-boot-starter-test")
+  testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+}
+
+tasks.withType<Test> {
+  useJUnitPlatform()
+}
+
+spotless {
+  java {
+    googleJavaFormat()
+    target("src/*/java/**/*.java")
+  }
+  if (System.getProperty("os.name", "undefined").contains("Windows")) {
+    lineEndings = LineEnding.UNIX
+  }
+}
+
+checkstyle {
+  toolVersion = "13.0.0"
+}
+
+tasks.named<Checkstyle>("checkstyleMain") {
+  source = sourceSets["main"].allJava
+  configFile = rootProject.file("checkstyle/config-main.xml")
+}
+
+// We only care about Javadocs for production code here.
+tasks.named<Checkstyle>("checkstyleTest") {
+  enabled = false
+}
+
+jacoco {
+  toolVersion = "0.8.14"
+}
+
+tasks.jacocoTestReport {
+  executionData.setFrom(
+    files(fileTree(project.layout.buildDirectory) { include("jacoco/*.exec") }),
+  )
+  reports {
+    xml.required = true
+    html.required = true
+  }
+  dependsOn("test")
+}
+
+tasks.getByName("sonar") {
+  dependsOn("jacocoTestReport")
+}
+
+sonar {
+  properties {
+    property("sonar.projectKey", "digitalservicebund_ris-assertions-common")
+    property("sonar.organization", "digitalservicebund")
+    property("sonar.host.url", "https://sonarcloud.io")
+    property("sonar.token", System.getenv("SONAR_TOKEN"))
+
+    val standardSources =
+      sourceSets.main
+        .get()
+        .allSource.srcDirs
+        .filter { it.exists() }
+
+    val dynamicConfigs =
+      fileTree(rootDir) {
+        include("*.kts")
+        include(".github/workflows/**")
+      }.files
+
+    property("sonar.sources", (standardSources + dynamicConfigs).joinToString(","))
+  }
+}
+
+publishing {
+  publications {
+    create<MavenPublication>("mavenJava") {
+      from(components["java"])
+      pom {
+        licenses {
+          license {
+            name = "GNU General Public License, Version 3"
+            url = "https://www.gnu.org/licenses/gpl-3.0.html"
+          }
+        }
+      }
+    }
+  }
+  repositories {
+    maven {
+      name = "GitHubPackages"
+      url = uri("https://maven.pkg.github.com/digitalservicebund/ris-assertions-common")
+      credentials {
+        username = System.getenv("GITHUB_ACTOR")
+        password = System.getenv("GITHUB_TOKEN")
+      }
+    }
+  }
+}
