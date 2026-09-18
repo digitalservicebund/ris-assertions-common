@@ -2,6 +2,20 @@
 
 Common library for custom assertions.
 
+## Prerequisites
+
+- Java 25
+- [Lefthook](https://github.com/evilmartians/lefthook) - git hook manager
+- [Trivy](https://github.com/aquasecurity/trivy) - vulnerability scanner (used in pre-push hook)
+
+Gradle is managed by the wrapper (`./gradlew`) - no separate installation needed.
+
+## Setup
+
+```
+lefthook install
+```
+
 ## CI/CD
 
 Workflows in `.github/workflows/` are thin callers that delegate to reusable workflows in
