@@ -64,7 +64,7 @@ public final class MyDocumentXml {
   public static final String META = "akn:akomaNtoso/akn:doc/akn:meta";
   // add XPath constants here
 
-  private MyTeamXml() {}
+  private MyDocumentXml() {}
 
   public static XmlAssert assertThatXml(String xml) {
     return new XmlAssert(xml, XmlDocumentPaths.MY_DOCUMENT);
