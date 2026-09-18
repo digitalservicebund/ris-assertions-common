@@ -9,8 +9,7 @@ public final class BzstXml {
   public static final String AKN_CLASSIFICATION_X_PATH = META + "/akn:classification";
   public static final String RIS_META_X_PATH = META + "/akn:proprietary/ris:meta";
   public static final String RIS_REFERENZ_RECHTSPRECHUNG_X_PATH =
-      META
-          + "/akn:analysis/akn:otherReferences/akn:implicitReference/ris:referenzRechtsprechung";
+      META + "/akn:analysis/akn:otherReferences/akn:implicitReference/ris:referenzRechtsprechung";
 
   private BzstXml() {}
 
