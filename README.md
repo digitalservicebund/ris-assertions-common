@@ -2,6 +2,18 @@
 
 Common library for custom assertions.
 
+## CI/CD
+
+Workflows in `.github/workflows/` are thin callers that delegate to reusable workflows in
+[digitalservicebund/ris-migration-common](https://github.com/digitalservicebund/ris-migration-common).
+
+The following workflows must exist there with an `on: workflow_call` trigger:
+- `.github/workflows/pipeline.yml`
+- `.github/workflows/publish-package.yml`
+
+`pipeline.yml` in `ris-migration-common` must reference `docs-generate.yml` using a full ref
+(not a relative path) since relative `uses:` paths are not allowed inside reusable workflows.
+
 ## XML Assertions
 
 ### Usage
