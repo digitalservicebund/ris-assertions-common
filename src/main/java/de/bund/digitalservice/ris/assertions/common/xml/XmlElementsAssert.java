@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.w3c.dom.NodeList;
 
+/** Assertion class for a fixed-count set of XML elements. */
 public final class XmlElementsAssert {
 
   private final NodeList nodelist;
@@ -22,6 +23,7 @@ public final class XmlElementsAssert {
    * Returns the element at {@code index} (0-based, document order) for further assertions.
    *
    * @param index 0-based position in document order
+   * @return an assertion for the element at the given index
    */
   public XmlElementAssert<XmlElementsAssert> element(int index) {
     assertThat(index)
@@ -36,6 +38,8 @@ public final class XmlElementsAssert {
    * Asserts at least one element in this set matches the constraints added via {@link
    * XmlContainsElementAssert#hasAttribute}, {@link XmlContainsElementAssert#hasAttributeKey}, and
    * {@link XmlContainsElementAssert#hasText}. Total count is not checked.
+   *
+   * @return a builder for constraining and asserting element matches
    */
   public XmlContainsElementAssert<XmlElementsAssert> containsElement() {
     return new XmlContainsElementAssert<>(nodelist, path, this, paths);
@@ -45,12 +49,18 @@ public final class XmlElementsAssert {
    * Returns a builder that asserts no element in this set matches the constraints added via {@link
    * XmlContainsElementAssert#hasAttribute}, {@link XmlContainsElementAssert#hasAttributeKey}, and
    * {@link XmlContainsElementAssert#hasText}. Inverse of {@link #containsElement()}.
+   *
+   * @return a builder for constraining and asserting no element matches
    */
   public XmlContainsElementAssert<XmlElementsAssert> containsNoElement() {
     return new XmlContainsElementAssert<>(nodelist, path, this, paths, true);
   }
 
-  /** Returns to the parent {@link XmlAssert} for further chaining. */
+  /**
+   * Returns to the parent {@link XmlAssert} for further chaining.
+   *
+   * @return the parent assertion
+   */
   public XmlAssert and() {
     return parent;
   }

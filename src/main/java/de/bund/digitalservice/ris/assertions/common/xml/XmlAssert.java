@@ -11,6 +11,7 @@ import org.assertj.core.api.AbstractCharSequenceAssert;
 import org.w3c.dom.*;
 import org.xml.sax.InputSource;
 
+/** Assertion class for XML strings using namespace-prefixed XPath expressions. */
 public final class XmlAssert extends AbstractCharSequenceAssert<XmlAssert, String> {
 
   private final XmlDocumentPaths paths;
@@ -69,6 +70,7 @@ public final class XmlAssert extends AbstractCharSequenceAssert<XmlAssert, Strin
    * Asserts exactly one element exists at {@code path} and returns it for further assertions.
    *
    * @param path namespace-prefixed path from root
+   * @return an assertion for the matched element
    */
   public XmlElementAssert<XmlAssert> hasSingleElement(String path) {
     NodeList nodelist = evalXPath(toCleanedAbsoluteXPath(path), actual, paths.namespaces());
@@ -84,6 +86,7 @@ public final class XmlAssert extends AbstractCharSequenceAssert<XmlAssert, Strin
    *
    * @param path namespace-prefixed path from root
    * @param count expected number of elements
+   * @return an assertion for the matched elements
    */
   public XmlElementsAssert hasElements(String path, int count) {
     NodeList nodelist = evalXPath(toCleanedAbsoluteXPath(path), actual, paths.namespaces());
@@ -99,6 +102,7 @@ public final class XmlAssert extends AbstractCharSequenceAssert<XmlAssert, Strin
    * XmlContainsElementAssert#hasAttributeKey}, and {@link XmlContainsElementAssert#hasText}.
    *
    * @param path namespace-prefixed path from root
+   * @return a builder for constraining and asserting element matches
    */
   public XmlContainsElementAssert<XmlAssert> containsElement(String path) {
     NodeList nodelist = evalXPath(toCleanedAbsoluteXPath(path), actual, paths.namespaces());
@@ -110,6 +114,7 @@ public final class XmlAssert extends AbstractCharSequenceAssert<XmlAssert, Strin
    *
    * @param elementName namespace-prefixed element name, e.g. {@code "ris:anwendungszeitraum"}
    * @param count expected number of matching elements
+   * @return this assertion for further chaining
    */
   public XmlAssert hasElementCountAnywhere(String elementName, int count) {
     NodeList nodes = evalXPath("//" + elementName, actual, paths.namespaces());
@@ -125,6 +130,7 @@ public final class XmlAssert extends AbstractCharSequenceAssert<XmlAssert, Strin
    * Asserts no element with the given name exists anywhere in the XML.
    *
    * @param elementName namespace-prefixed element name, e.g. {@code "ris:anwendungszeitraum"}
+   * @return this assertion for further chaining
    */
   public XmlAssert hasNoElementAnywhere(String elementName) {
     return hasElementCountAnywhere(elementName, 0);
@@ -137,6 +143,7 @@ public final class XmlAssert extends AbstractCharSequenceAssert<XmlAssert, Strin
    * Inverse of {@link #containsElement(String)}.
    *
    * @param path namespace-prefixed path from root
+   * @return a builder for constraining and asserting no element matches
    */
   public XmlContainsElementAssert<XmlAssert> containsNoElement(String path) {
     NodeList nodelist = evalXPath(toCleanedAbsoluteXPath(path), actual, paths.namespaces());

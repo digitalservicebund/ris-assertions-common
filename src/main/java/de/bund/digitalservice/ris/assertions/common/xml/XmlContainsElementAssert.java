@@ -9,6 +9,11 @@ import java.util.Set;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+/**
+ * Assertion builder for matching or excluding elements within a node list.
+ *
+ * @param <P> type of the parent assertion to return from {@link #and()}
+ */
 public final class XmlContainsElementAssert<P> {
 
   private final NodeList nodelist;
@@ -39,6 +44,7 @@ public final class XmlContainsElementAssert<P> {
    * Combined with any prior constraints.
    *
    * @param attrs attribute name→value pairs to match
+   * @return this builder for further chaining
    */
   public XmlContainsElementAssert<P> hasAttributes(Map<String, String> attrs) {
     if (this.attrsFilter == null) this.attrsFilter = new HashMap<>();
@@ -53,6 +59,7 @@ public final class XmlContainsElementAssert<P> {
    *
    * @param attr attribute name, e.g. {@code "domainTerm"} or {@code "akn:refersTo"}
    * @param value expected attribute value
+   * @return this builder for further chaining
    */
   public XmlContainsElementAssert<P> hasAttribute(String attr, String value) {
     return hasAttributes(Map.of(attr, value));
@@ -63,6 +70,7 @@ public final class XmlContainsElementAssert<P> {
    * assertion. Combined with any prior constraints.
    *
    * @param attr attribute name, e.g. {@code "domainTerm"} or {@code "akn:refersTo"}
+   * @return this builder for further chaining
    */
   public XmlContainsElementAssert<P> hasAttributeKey(String attr) {
     if (this.attrKeysFilter == null) this.attrKeysFilter = new HashSet<>();
@@ -76,6 +84,7 @@ public final class XmlContainsElementAssert<P> {
    * Combined with any prior constraints.
    *
    * @param text expected text content
+   * @return this builder for further chaining
    */
   public XmlContainsElementAssert<P> hasText(String text) {
     this.textFilter = text;
@@ -83,7 +92,11 @@ public final class XmlContainsElementAssert<P> {
     return this;
   }
 
-  /** Returns to the parent assertion for further chaining. */
+  /**
+   * Returns to the parent assertion for further chaining.
+   *
+   * @return the parent assertion
+   */
   public P and() {
     return parent;
   }
