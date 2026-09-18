@@ -1,6 +1,5 @@
-package de.bund.digitalservice.ris.adm.bzst.assertions;
+package de.bund.digitalservice.ris.assertions.common.xml;
 
-import static de.bund.digitalservice.ris.adm.bzst.assertions.XmlAssert.assertThatXml;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -8,6 +7,16 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 class XmlContainsElementAssertTest {
+
+  private static final XmlDocumentPaths PATHS =
+      new XmlDocumentPaths(
+          Map.of(
+              "akn", "http://docs.oasis-open.org/legaldocml/ns/akn/3.0",
+              "ris", "http://ldml.neuris.de/adm/bzst/meta/"));
+
+  private static XmlAssert assertThatXml(String xml) {
+    return new XmlAssert(xml, PATHS);
+  }
 
   private static final String XML =
       """

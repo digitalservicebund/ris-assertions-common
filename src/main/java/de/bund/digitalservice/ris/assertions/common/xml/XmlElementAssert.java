@@ -1,4 +1,4 @@
-package de.bund.digitalservice.ris.adm.bzst.assertions;
+package de.bund.digitalservice.ris.assertions.common.xml;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -10,11 +10,13 @@ public final class XmlElementAssert<P> {
   private final Node node;
   private final String path;
   private final P parent;
+  private final XmlDocumentPaths paths;
 
-  XmlElementAssert(Node node, String path, P parent) {
+  XmlElementAssert(Node node, String path, P parent, XmlDocumentPaths paths) {
     this.node = node;
     this.path = path;
     this.parent = parent;
+    this.paths = paths;
   }
 
   /**
@@ -25,7 +27,7 @@ public final class XmlElementAssert<P> {
   public XmlElementAssert<P> hasAttributes(Map<String, String> attrs) {
     attrs.forEach(
         (attr, value) -> {
-          Node attrNode = XmlAssert.getAttrNode(node, attr);
+          Node attrNode = XmlAssert.getAttrNode(node, attr, paths.namespaces());
           assertThat(attrNode)
               .as("attribute '%s' not found on element at path '%s'", attr, path)
               .isNotNull();
@@ -52,7 +54,7 @@ public final class XmlElementAssert<P> {
    * @param attr attribute name, e.g. {@code "domainTerm"} or {@code "akn:refersTo"}
    */
   public XmlElementAssert<P> hasAttributeKey(String attr) {
-    assertThat(XmlAssert.getAttrNode(node, attr))
+    assertThat(XmlAssert.getAttrNode(node, attr, paths.namespaces()))
         .as("attribute '%s' not found on element at path '%s'", attr, path)
         .isNotNull();
     return this;
@@ -64,7 +66,7 @@ public final class XmlElementAssert<P> {
    * @param attr attribute name, e.g. {@code "domainTerm"} or {@code "akn:refersTo"}
    */
   public XmlElementAssert<P> doesNotHaveAttributeKey(String attr) {
-    assertThat(XmlAssert.getAttrNode(node, attr))
+    assertThat(XmlAssert.getAttrNode(node, attr, paths.namespaces()))
         .as("attribute '%s' was unexpectedly found on element at path '%s'", attr, path)
         .isNull();
     return this;

@@ -1,4 +1,4 @@
-package de.bund.digitalservice.ris.adm.bzst.assertions;
+package de.bund.digitalservice.ris.assertions.common.xml;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -13,28 +13,12 @@ import org.xml.sax.InputSource;
 
 public final class XmlAssert extends AbstractCharSequenceAssert<XmlAssert, String> {
 
-  public XmlAssert(String actual) {
+  private final XmlDocumentPaths paths;
+
+  public XmlAssert(String actual, XmlDocumentPaths paths) {
     super(actual, XmlAssert.class);
+    this.paths = paths;
   }
-
-  public static XmlAssert assertThatXml(String actual) {
-    return new XmlAssert(actual);
-  }
-
-  // ── Constants
-
-  public static final Map<String, String> XML_NAMESPACES =
-      Map.of(
-          "akn", "http://docs.oasis-open.org/legaldocml/ns/akn/3.0",
-          "ris", "http://ldml.neuris.de/adm/bzst/meta/");
-
-  public static final String AKN_META_X_PATH = "akn:akomaNtoso/akn:doc/akn:meta";
-  public static final String AKN_IDENTIFICATION_X_PATH = AKN_META_X_PATH + "/akn:identification";
-  public static final String AKN_CLASSIFICATION_X_PATH = AKN_META_X_PATH + "/akn:classification";
-  public static final String RIS_META_X_PATH = AKN_META_X_PATH + "/akn:proprietary/ris:meta";
-  public static final String RIS_REFERENZ_RECHTSPRECHUNG_X_PATH =
-      AKN_META_X_PATH
-          + "/akn:analysis/akn:otherReferences/akn:implicitReference/ris:referenzRechtsprechung";
 
   // ── Infrastructure (package-private: used by sibling assert classes)
 
@@ -45,13 +29,13 @@ public final class XmlAssert extends AbstractCharSequenceAssert<XmlAssert, Strin
         .collect(Collectors.joining("/", "/", ""));
   }
 
-  static NodeList evalXPath(String expression, String xml) {
+  static NodeList evalXPath(String expression, String xml, Map<String, String> namespaces) {
     try {
       XPath xpath = XPathFactory.newInstance().newXPath();
       xpath.setNamespaceContext(
           new NamespaceContext() {
             public String getNamespaceURI(String prefix) {
-              return XML_NAMESPACES.getOrDefault(prefix, "");
+              return namespaces.getOrDefault(prefix, "");
             }
 
             public String getPrefix(String ns) {
@@ -70,11 +54,11 @@ public final class XmlAssert extends AbstractCharSequenceAssert<XmlAssert, Strin
     }
   }
 
-  static Node getAttrNode(Node node, String attr) {
+  static Node getAttrNode(Node node, String attr, Map<String, String> namespaces) {
     Element element = (Element) node;
     if (attr.contains(":")) {
       String[] parts = attr.split(":");
-      return element.getAttributeNodeNS(XML_NAMESPACES.getOrDefault(parts[0], ""), parts[1]);
+      return element.getAttributeNodeNS(namespaces.getOrDefault(parts[0], ""), parts[1]);
     }
     return element.getAttributeNode(attr);
   }
@@ -87,11 +71,11 @@ public final class XmlAssert extends AbstractCharSequenceAssert<XmlAssert, Strin
    * @param path namespace-prefixed path from root
    */
   public XmlElementAssert<XmlAssert> hasSingleElement(String path) {
-    NodeList nodelist = evalXPath(toCleanedAbsoluteXPath(path), actual);
+    NodeList nodelist = evalXPath(toCleanedAbsoluteXPath(path), actual, paths.namespaces());
     assertThat(nodelist.getLength())
         .as("expected 1 element at path '%s' but found %d", path, nodelist.getLength())
         .isEqualTo(1);
-    return new XmlElementAssert<>(nodelist.item(0), path, this);
+    return new XmlElementAssert<>(nodelist.item(0), path, this, paths);
   }
 
   /**
@@ -102,11 +86,11 @@ public final class XmlAssert extends AbstractCharSequenceAssert<XmlAssert, Strin
    * @param count expected number of elements
    */
   public XmlElementsAssert hasElements(String path, int count) {
-    NodeList nodelist = evalXPath(toCleanedAbsoluteXPath(path), actual);
+    NodeList nodelist = evalXPath(toCleanedAbsoluteXPath(path), actual, paths.namespaces());
     assertThat(nodelist.getLength())
         .as("expected %d element(s) at path '%s' but found %d", count, path, nodelist.getLength())
         .isEqualTo(count);
-    return new XmlElementsAssert(nodelist, path, this);
+    return new XmlElementsAssert(nodelist, path, this, paths);
   }
 
   /**
@@ -117,8 +101,8 @@ public final class XmlAssert extends AbstractCharSequenceAssert<XmlAssert, Strin
    * @param path namespace-prefixed path from root
    */
   public XmlContainsElementAssert<XmlAssert> containsElement(String path) {
-    NodeList nodelist = evalXPath(toCleanedAbsoluteXPath(path), actual);
-    return new XmlContainsElementAssert<>(nodelist, path, this);
+    NodeList nodelist = evalXPath(toCleanedAbsoluteXPath(path), actual, paths.namespaces());
+    return new XmlContainsElementAssert<>(nodelist, path, this, paths);
   }
 
   /**
@@ -128,7 +112,7 @@ public final class XmlAssert extends AbstractCharSequenceAssert<XmlAssert, Strin
    * @param count expected number of matching elements
    */
   public XmlAssert hasElementCountAnywhere(String elementName, int count) {
-    NodeList nodes = evalXPath("//" + elementName, actual);
+    NodeList nodes = evalXPath("//" + elementName, actual, paths.namespaces());
     assertThat(nodes.getLength())
         .as(
             "expected %d element(s) named <%s> anywhere in document but found %d",
@@ -155,7 +139,7 @@ public final class XmlAssert extends AbstractCharSequenceAssert<XmlAssert, Strin
    * @param path namespace-prefixed path from root
    */
   public XmlContainsElementAssert<XmlAssert> containsNoElement(String path) {
-    NodeList nodelist = evalXPath(toCleanedAbsoluteXPath(path), actual);
-    return new XmlContainsElementAssert<>(nodelist, path, this, true);
+    NodeList nodelist = evalXPath(toCleanedAbsoluteXPath(path), actual, paths.namespaces());
+    return new XmlContainsElementAssert<>(nodelist, path, this, paths, true);
   }
 }

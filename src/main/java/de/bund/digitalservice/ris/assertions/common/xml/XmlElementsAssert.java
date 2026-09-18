@@ -1,4 +1,4 @@
-package de.bund.digitalservice.ris.adm.bzst.assertions;
+package de.bund.digitalservice.ris.assertions.common.xml;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -9,11 +9,13 @@ public final class XmlElementsAssert {
   private final NodeList nodelist;
   private final String path;
   private final XmlAssert parent;
+  private final XmlDocumentPaths paths;
 
-  XmlElementsAssert(NodeList nodelist, String path, XmlAssert parent) {
+  XmlElementsAssert(NodeList nodelist, String path, XmlAssert parent, XmlDocumentPaths paths) {
     this.nodelist = nodelist;
     this.path = path;
     this.parent = parent;
+    this.paths = paths;
   }
 
   /**
@@ -27,7 +29,7 @@ public final class XmlElementsAssert {
             "index %d out of bounds for %d element(s) at path '%s'",
             index, nodelist.getLength(), path)
         .isLessThan(nodelist.getLength());
-    return new XmlElementAssert<>(nodelist.item(index), path + "[" + index + "]", this);
+    return new XmlElementAssert<>(nodelist.item(index), path + "[" + index + "]", this, paths);
   }
 
   /**
@@ -36,7 +38,7 @@ public final class XmlElementsAssert {
    * {@link XmlContainsElementAssert#hasText}. Total count is not checked.
    */
   public XmlContainsElementAssert<XmlElementsAssert> containsElement() {
-    return new XmlContainsElementAssert<>(nodelist, path, this);
+    return new XmlContainsElementAssert<>(nodelist, path, this, paths);
   }
 
   /**
@@ -45,7 +47,7 @@ public final class XmlElementsAssert {
    * {@link XmlContainsElementAssert#hasText}. Inverse of {@link #containsElement()}.
    */
   public XmlContainsElementAssert<XmlElementsAssert> containsNoElement() {
-    return new XmlContainsElementAssert<>(nodelist, path, this, true);
+    return new XmlContainsElementAssert<>(nodelist, path, this, paths, true);
   }
 
   /** Returns to the parent {@link XmlAssert} for further chaining. */

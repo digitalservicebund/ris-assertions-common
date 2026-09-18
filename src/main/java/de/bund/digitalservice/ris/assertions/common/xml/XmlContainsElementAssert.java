@@ -1,4 +1,4 @@
-package de.bund.digitalservice.ris.adm.bzst.assertions;
+package de.bund.digitalservice.ris.assertions.common.xml;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -14,19 +14,22 @@ public final class XmlContainsElementAssert<P> {
   private final NodeList nodelist;
   private final String path;
   private final P parent;
+  private final XmlDocumentPaths paths;
   private final boolean negate;
   private Map<String, String> attrsFilter = null;
   private Set<String> attrKeysFilter = null;
   private String textFilter = null;
 
-  XmlContainsElementAssert(NodeList nodelist, String path, P parent) {
-    this(nodelist, path, parent, false);
+  XmlContainsElementAssert(NodeList nodelist, String path, P parent, XmlDocumentPaths paths) {
+    this(nodelist, path, parent, paths, false);
   }
 
-  XmlContainsElementAssert(NodeList nodelist, String path, P parent, boolean negate) {
+  XmlContainsElementAssert(
+      NodeList nodelist, String path, P parent, XmlDocumentPaths paths, boolean negate) {
     this.nodelist = nodelist;
     this.path = path;
     this.parent = parent;
+    this.paths = paths;
     this.negate = negate;
   }
 
@@ -123,12 +126,12 @@ public final class XmlContainsElementAssert<P> {
   private boolean matches(Node node) {
     if (attrKeysFilter != null) {
       for (String attr : attrKeysFilter) {
-        if (XmlAssert.getAttrNode(node, attr) == null) return false;
+        if (XmlAssert.getAttrNode(node, attr, paths.namespaces()) == null) return false;
       }
     }
     if (attrsFilter != null) {
       for (Map.Entry<String, String> entry : attrsFilter.entrySet()) {
-        Node attrNode = XmlAssert.getAttrNode(node, entry.getKey());
+        Node attrNode = XmlAssert.getAttrNode(node, entry.getKey(), paths.namespaces());
         if (attrNode == null || !attrNode.getNodeValue().equals(entry.getValue())) return false;
       }
     }
