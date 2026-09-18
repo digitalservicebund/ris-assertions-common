@@ -1,0 +1,23 @@
+name: Publish package to GitHub Packages
+
+permissions:
+  contents: read
+
+on:
+  push:
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]+"
+  workflow_dispatch:
+
+jobs:
+  pipeline:
+    uses: digitalservicebund/ris-migration-common/.github/workflows/pipeline.yml@8a336214e6802693fd4e0e62c6c65592c0f9500e
+    secrets: inherit
+
+  publish:
+    needs: [pipeline]
+    uses: digitalservicebund/ris-migration-common/.github/workflows/publish-package.yml@8a336214e6802693fd4e0e62c6c65592c0f9500e
+    secrets: inherit
+    permissions:
+      contents: read
+      packages: write

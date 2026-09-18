@@ -6,6 +6,7 @@ plugins {
   id("io.spring.dependency-management") version "1.1.7"
   id("org.sonarqube") version "7.5.0.8588"
   id("com.diffplug.spotless") version "8.10.2"
+  id("com.github.jk1.dependency-license-report") version "2.9"
   id("jacoco")
   id("checkstyle")
   `maven-publish`
@@ -48,6 +49,10 @@ spotless {
   if (System.getProperty("os.name", "undefined").contains("Windows")) {
     lineEndings = LineEnding.UNIX
   }
+}
+
+licenseReport {
+  allowedLicensesFile = rootProject.file("allowed-licenses.json")
 }
 
 checkstyle {
