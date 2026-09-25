@@ -1,4 +1,4 @@
-package de.bund.digitalservice.ris.adm.bzst.assertions;
+package de.bund.digitalservice.ris.assertions.common.xml;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -9,24 +9,32 @@ import java.util.Set;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+/**
+ * Assertion builder for matching or excluding elements within a node list.
+ *
+ * @param <P> type of the parent assertion to return from {@link #and()}
+ */
 public final class XmlContainsElementAssert<P> {
 
   private final NodeList nodelist;
   private final String path;
   private final P parent;
+  private final XmlDocumentPaths paths;
   private final boolean negate;
   private Map<String, String> attrsFilter = null;
   private Set<String> attrKeysFilter = null;
   private String textFilter = null;
 
-  XmlContainsElementAssert(NodeList nodelist, String path, P parent) {
-    this(nodelist, path, parent, false);
+  XmlContainsElementAssert(NodeList nodelist, String path, P parent, XmlDocumentPaths paths) {
+    this(nodelist, path, parent, paths, false);
   }
 
-  XmlContainsElementAssert(NodeList nodelist, String path, P parent, boolean negate) {
+  XmlContainsElementAssert(
+      NodeList nodelist, String path, P parent, XmlDocumentPaths paths, boolean negate) {
     this.nodelist = nodelist;
     this.path = path;
     this.parent = parent;
+    this.paths = paths;
     this.negate = negate;
   }
 
@@ -36,6 +44,7 @@ public final class XmlContainsElementAssert<P> {
    * Combined with any prior constraints.
    *
    * @param attrs attribute name→value pairs to match
+   * @return this builder for further chaining
    */
   public XmlContainsElementAssert<P> hasAttributes(Map<String, String> attrs) {
     if (this.attrsFilter == null) this.attrsFilter = new HashMap<>();
@@ -50,6 +59,7 @@ public final class XmlContainsElementAssert<P> {
    *
    * @param attr attribute name, e.g. {@code "domainTerm"} or {@code "akn:refersTo"}
    * @param value expected attribute value
+   * @return this builder for further chaining
    */
   public XmlContainsElementAssert<P> hasAttribute(String attr, String value) {
     return hasAttributes(Map.of(attr, value));
@@ -60,6 +70,7 @@ public final class XmlContainsElementAssert<P> {
    * assertion. Combined with any prior constraints.
    *
    * @param attr attribute name, e.g. {@code "domainTerm"} or {@code "akn:refersTo"}
+   * @return this builder for further chaining
    */
   public XmlContainsElementAssert<P> hasAttributeKey(String attr) {
     if (this.attrKeysFilter == null) this.attrKeysFilter = new HashSet<>();
@@ -73,6 +84,7 @@ public final class XmlContainsElementAssert<P> {
    * Combined with any prior constraints.
    *
    * @param text expected text content
+   * @return this builder for further chaining
    */
   public XmlContainsElementAssert<P> hasText(String text) {
     this.textFilter = text;
@@ -80,7 +92,11 @@ public final class XmlContainsElementAssert<P> {
     return this;
   }
 
-  /** Returns to the parent assertion for further chaining. */
+  /**
+   * Returns to the parent assertion for further chaining.
+   *
+   * @return the parent assertion
+   */
   public P and() {
     return parent;
   }
@@ -123,12 +139,12 @@ public final class XmlContainsElementAssert<P> {
   private boolean matches(Node node) {
     if (attrKeysFilter != null) {
       for (String attr : attrKeysFilter) {
-        if (XmlAssert.getAttrNode(node, attr) == null) return false;
+        if (XmlAssert.getAttrNode(node, attr, paths.namespaces()) == null) return false;
       }
     }
     if (attrsFilter != null) {
       for (Map.Entry<String, String> entry : attrsFilter.entrySet()) {
-        Node attrNode = XmlAssert.getAttrNode(node, entry.getKey());
+        Node attrNode = XmlAssert.getAttrNode(node, entry.getKey(), paths.namespaces());
         if (attrNode == null || !attrNode.getNodeValue().equals(entry.getValue())) return false;
       }
     }
