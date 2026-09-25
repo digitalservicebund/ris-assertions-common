@@ -11,12 +11,12 @@ on:
 
 jobs:
   pipeline:
-    uses: digitalservicebund/ris-migration-common/.github/workflows/pipeline.yml@8a336214e6802693fd4e0e62c6c65592c0f9500e
+    uses: digitalservicebund/ris-migration-common/.github/workflows/pipeline.yml@e29d672d13a07c98bf9ecfefda1b09d5b836a58a
     secrets: inherit
 
   publish:
     needs: [pipeline]
-    uses: digitalservicebund/ris-migration-common/.github/workflows/publish-package.yml@8a336214e6802693fd4e0e62c6c65592c0f9500e
+    uses: digitalservicebund/ris-migration-common/.github/workflows/publish-package.yml@e29d672d13a07c98bf9ecfefda1b09d5b836a58a
     secrets: inherit
     permissions:
       contents: read
