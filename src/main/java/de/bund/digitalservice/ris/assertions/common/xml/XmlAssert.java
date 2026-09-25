@@ -64,12 +64,22 @@ public final class XmlAssert extends AbstractCharSequenceAssert<XmlAssert, Strin
     return element.getAttributeNode(attr);
   }
 
+  /**
+   * Not supported on assertion objects.
+   *
+   * @throws UnsupportedOperationException always
+   */
   @Override
   public boolean equals(Object obj) {
     throw new UnsupportedOperationException(
         "equals is not supported on assertion objects - use assertions instead");
   }
 
+  /**
+   * Not supported on assertion objects.
+   *
+   * @throws UnsupportedOperationException always
+   */
   @Override
   public int hashCode() {
     throw new UnsupportedOperationException("hashCode is not supported on assertion objects");
