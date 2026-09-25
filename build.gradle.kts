@@ -111,6 +111,10 @@ sonar {
   }
 }
 
+dependencyLocking {
+  lockAllConfigurations()
+}
+
 publishing {
   publications {
     create<MavenPublication>("mavenJava") {
