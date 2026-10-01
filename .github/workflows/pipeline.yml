@@ -17,7 +17,7 @@ on:
 
 jobs:
   pipeline:
-    uses: digitalservicebund/ris-migration-common/.github/workflows/pipeline.yml@e29d672d13a07c98bf9ecfefda1b09d5b836a58a
+    uses: digitalservicebund/ris-migration-common/.github/workflows/pipeline.yml@e1ff9ead8c0090874ca28760b378da68da2f12cb
     secrets: inherit
 
   license-check:
