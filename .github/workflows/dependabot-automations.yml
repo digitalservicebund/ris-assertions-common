@@ -11,7 +11,7 @@ on:
 
 jobs:
   update-verification:
-    if: github.actor == 'dependabot[bot]'
+    if: github.event.pull_request.user.login == 'dependabot[bot]'
     uses: digitalservicebund/ris-assertions-common/.github/workflows/update-verification-metadata.yml@fd512a01d8dc8a67d3415cf46626401735c5b1b3
     with:
       java-version: '25'
