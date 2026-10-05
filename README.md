@@ -28,6 +28,10 @@ The following workflows must exist there with an `on: workflow_call` trigger:
 `pipeline.yml` in `ris-migration-common` must reference `docs-generate.yml` using a full ref
 (not a relative path) since relative `uses:` paths are not allowed inside reusable workflows.
 
+It also includes a workflow to update the Gradle metadata verification file, consisting of two parts:
+- `.github/workflows/update-verification-metadata.yml`, reusable workflow that updates `gradle/verification-metadata.xml`
+- `.github/workflows/dependabot-automations.yml`, workflow that triggers on Dependabot PRs and calls the first workflow.
+
 ## XML Assertions
 
 ### Usage

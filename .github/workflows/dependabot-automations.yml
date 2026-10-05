@@ -10,6 +10,6 @@ on:
 jobs:
   update-verification:
     if: github.actor == 'dependabot[bot]'
-    uses: org/ris-migration-common/.github/workflows/update-verification.yml@1f4f2e407c268f1d1f0573ab3966ee2b92e89fed
+    uses: digitalservicebund/ris-assertions-common/.github/workflows/update-verification.yml@1f4f2e407c268f1d1f0573ab3966ee2b92e89fed
     with:
       java-version: '25'
