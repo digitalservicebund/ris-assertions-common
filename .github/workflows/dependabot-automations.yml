@@ -1,0 +1,15 @@
+on:
+  pull_request:
+    paths:
+      - 'build.gradle.kts'
+      - '**/build.gradle.kts'
+      - 'gradle/libs.versions.toml'
+      - 'gradle/wrapper/gradle-wrapper.properties'
+      - 'settings.gradle.kts'
+
+jobs:
+  update-verification:
+    if: github.actor == 'dependabot[bot]'
+    uses: org/ris-migration-common/.github/workflows/update-verification.yml@1f4f2e407c268f1d1f0573ab3966ee2b92e89fed
+    with:
+      java-version: '25'
