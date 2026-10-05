@@ -3,7 +3,9 @@ package de.bund.digitalservice.ris.assertions.common.xml;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.lang.reflect.Constructor;
 import java.util.Map;
+import javax.xml.namespace.NamespaceContext;
 import org.junit.jupiter.api.Test;
 
 class XmlAssertTest {
@@ -66,6 +68,37 @@ class XmlAssertTest {
     assertThatThrownBy(() -> XmlAssert.evalXPath("[[invalid]]", XML, Map.of()))
         .isInstanceOf(RuntimeException.class)
         .hasMessageContaining("Invalid XPath expression");
+  }
+
+  // The XPath engine never calls getPrefix/getPrefixes, so the anonymous NamespaceContext
+  // declared in XmlAssert.evalXPath is instantiated reflectively to exercise them directly.
+  @Test
+  void namespaceContext_reverseLookup_returnsNull() throws Exception {
+    Constructor<?> constructor =
+        Class.forName(XmlAssert.class.getName() + "$1").getDeclaredConstructor(Map.class);
+    constructor.setAccessible(true);
+    NamespaceContext context = (NamespaceContext) constructor.newInstance(PATHS.namespaces());
+
+    assertThat(context.getPrefix("http://ldml.neuris.de/adm/bzst/meta/")).isNull();
+    assertThat(context.getPrefixes("http://ldml.neuris.de/adm/bzst/meta/")).isNull();
+  }
+
+  // ── equals / hashCode
+
+  @Test
+  void equals_isUnsupported() {
+    XmlAssert xmlAssert = assertThatXml(XML);
+    assertThatThrownBy(() -> xmlAssert.equals(xmlAssert))
+        .isInstanceOf(UnsupportedOperationException.class)
+        .hasMessageContaining("equals is not supported");
+  }
+
+  @Test
+  void hashCode_isUnsupported() {
+    XmlAssert xmlAssert = assertThatXml(XML);
+    assertThatThrownBy(xmlAssert::hashCode)
+        .isInstanceOf(UnsupportedOperationException.class)
+        .hasMessageContaining("hashCode is not supported");
   }
 
   // ── hasSingleElement
