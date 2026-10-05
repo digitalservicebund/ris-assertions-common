@@ -3,6 +3,10 @@ name: Pipeline
 permissions:
   contents: read
 
+concurrency:
+  group: pipeline-${{ github.ref }}
+  cancel-in-progress: true
+
 on:
   push:
     branches: [main]
