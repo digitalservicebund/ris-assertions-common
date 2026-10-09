@@ -17,7 +17,7 @@ repositories {
 }
 
 group = "de.bund.digitalservice.ris"
-version = System.getenv("RELEASE_VERSION") ?: "0.0.1"
+version = System.getenv("RELEASE_VERSION") ?: "0.1.0"
 
 java {
   toolchain {
@@ -119,6 +119,14 @@ publishing {
   publications {
     create<MavenPublication>("mavenJava") {
       from(components["java"])
+      versionMapping {
+        usage("java-api") {
+          fromResolutionOf("runtimeClasspath")
+        }
+        usage("java-runtime") {
+          fromResolutionResult()
+        }
+      }
       pom {
         licenses {
           license {
