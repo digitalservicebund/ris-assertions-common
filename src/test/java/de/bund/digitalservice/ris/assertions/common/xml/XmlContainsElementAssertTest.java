@@ -12,7 +12,7 @@ class XmlContainsElementAssertTest {
       new XmlDocumentPaths(
           Map.of(
               "akn", "http://docs.oasis-open.org/legaldocml/ns/akn/3.0",
-              "ris", "http://ldml.neuris.de/adm/bzst/meta/"));
+              "ris", "http://rechtsinformationen.bund.de/schema/ris/0.1"));
 
   private static XmlAssert assertThatXml(String xml) {
     return new XmlAssert(xml, PATHS);
@@ -21,7 +21,7 @@ class XmlContainsElementAssertTest {
   private static final String XML =
       """
       <akn:akomaNtoso xmlns:akn="http://docs.oasis-open.org/legaldocml/ns/akn/3.0"
-                      xmlns:ris="http://ldml.neuris.de/adm/bzst/meta/">
+                      xmlns:ris="http://rechtsinformationen.bund.de/schema/ris/0.1">
         <akn:doc>
           <akn:meta>
             <akn:classification>

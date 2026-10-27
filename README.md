@@ -55,7 +55,7 @@ public static final XmlDocumentPaths MY_DOCUMENT =
     new XmlDocumentPaths(
         Map.of(
             "akn", "http://docs.oasis-open.org/legaldocml/ns/akn/3.0",
-            "ris", "http://ldml.neuris.de/<your-document-specific-namespace>/"));
+            "ris", "http://rechtsinformationen.bund.de/schema/ris/0.1"));
 ```
 
 2. **Create a factory class** `MyDocumentXml.java` in the same package:
