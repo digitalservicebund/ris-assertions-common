@@ -12,7 +12,7 @@ class XmlElementAssertTest {
       new XmlDocumentPaths(
           Map.of(
               "akn", "http://docs.oasis-open.org/legaldocml/ns/akn/3.0",
-              "ris", "http://ldml.neuris.de/adm/bzst/meta/"));
+              "ris", "http://rechtsinformationen.bund.de/schema/ris/0.1"));
 
   private static XmlAssert assertThatXml(String xml) {
     return new XmlAssert(xml, PATHS);
@@ -21,7 +21,7 @@ class XmlElementAssertTest {
   private static final String XML =
       """
       <akn:akomaNtoso xmlns:akn="http://docs.oasis-open.org/legaldocml/ns/akn/3.0"
-                      xmlns:ris="http://ldml.neuris.de/adm/bzst/meta/">
+                      xmlns:ris="http://rechtsinformationen.bund.de/schema/ris/0.1">
         <akn:doc>
           <akn:meta>
             <akn:identification>
@@ -39,7 +39,7 @@ class XmlElementAssertTest {
 
   private static final String NS_ATTR_XML =
       """
-      <root xmlns:ris="http://ldml.neuris.de/adm/bzst/meta/">
+      <root xmlns:ris="http://rechtsinformationen.bund.de/schema/ris/0.1">
         <item ris:category="cat1" plain="val1">hello</item>
       </root>
       """;

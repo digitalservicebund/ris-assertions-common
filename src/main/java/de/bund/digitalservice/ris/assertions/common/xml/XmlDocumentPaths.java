@@ -14,5 +14,5 @@ public record XmlDocumentPaths(Map<String, String> namespaces) {
       new XmlDocumentPaths(
           Map.of(
               "akn", "http://docs.oasis-open.org/legaldocml/ns/akn/3.0",
-              "ris", "http://ldml.neuris.de/adm/bzst/meta/"));
+              "ris", "http://rechtsinformationen.bund.de/schema/ris/0.1"));
 }
