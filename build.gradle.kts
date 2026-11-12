@@ -5,8 +5,8 @@ plugins {
   `java-library`
   id("io.spring.dependency-management") version "1.1.7"
   id("org.sonarqube") version "7.5.0.8588"
-  id("com.diffplug.spotless") version "8.10.4"
-  id("com.github.jk1.dependency-license-report") version "3.1.4"
+  id("com.diffplug.spotless") version "8.11.0"
+  id("com.github.jk1.dependency-license-report") version "3.1.5"
   id("jacoco")
   id("checkstyle")
   `maven-publish`
@@ -27,7 +27,7 @@ java {
 
 dependencyManagement {
   imports {
-    mavenBom("org.springframework.boot:spring-boot-dependencies:4.1.1")
+    mavenBom("org.springframework.boot:spring-boot-dependencies:4.1.2")
   }
 }
 
