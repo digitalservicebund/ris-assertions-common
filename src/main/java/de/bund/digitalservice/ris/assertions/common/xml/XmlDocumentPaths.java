@@ -9,8 +9,8 @@ import java.util.Map;
  */
 public record XmlDocumentPaths(Map<String, String> namespaces) {
 
-  /** Namespace configuration for BZST XML documents. */
-  public static final XmlDocumentPaths BZST =
+  /** Namespace configuration for LegalDocMl documents. */
+  public static final XmlDocumentPaths LEGALDOCML =
       new XmlDocumentPaths(
           Map.of(
               "akn", "http://docs.oasis-open.org/legaldocml/ns/akn/3.0",

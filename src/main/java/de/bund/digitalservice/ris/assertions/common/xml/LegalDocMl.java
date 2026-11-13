@@ -1,7 +1,7 @@
 package de.bund.digitalservice.ris.assertions.common.xml;
 
-/** Entry point and XPath constants for BZST XML assertions. */
-public final class BzstXml {
+/** Entry point and XPath constants for LegalDocMl assertions. */
+public final class LegalDocMl {
 
   private static final String META = "akn:akomaNtoso/akn:doc/akn:meta";
 
@@ -21,7 +21,7 @@ public final class BzstXml {
   public static final String RIS_REFERENZ_RECHTSPRECHUNG_X_PATH =
       META + "/akn:analysis/akn:otherReferences/akn:implicitReference/ris:referenzRechtsprechung";
 
-  private BzstXml() {}
+  private LegalDocMl() {}
 
   /**
    * Creates an assertion for the given BZST XML string.
@@ -30,6 +30,6 @@ public final class BzstXml {
    * @return a new {@link XmlAssert} configured with BZST namespaces
    */
   public static XmlAssert assertThatXml(String xml) {
-    return new XmlAssert(xml, XmlDocumentPaths.BZST);
+    return new XmlAssert(xml, XmlDocumentPaths.LEGALDOCML);
   }
 }
