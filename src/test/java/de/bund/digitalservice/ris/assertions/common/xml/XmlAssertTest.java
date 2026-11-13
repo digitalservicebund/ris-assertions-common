@@ -1,5 +1,7 @@
 package de.bund.digitalservice.ris.assertions.common.xml;
 
+import static de.bund.digitalservice.ris.assertions.common.xml.LegalDocMl.*;
+import static de.bund.digitalservice.ris.assertions.common.xml.XmlDocumentPaths.LEGALDOCML;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -9,16 +11,6 @@ import javax.xml.namespace.NamespaceContext;
 import org.junit.jupiter.api.Test;
 
 class XmlAssertTest {
-
-  private static final XmlDocumentPaths PATHS =
-      new XmlDocumentPaths(
-          Map.of(
-              "akn", "http://docs.oasis-open.org/legaldocml/ns/akn/3.0",
-              "ris", "http://rechtsinformationen.bund.de/schema/ris/0.1"));
-
-  private static XmlAssert assertThatXml(String xml) {
-    return new XmlAssert(xml, PATHS);
-  }
 
   private static final String XML =
       """
@@ -77,7 +69,7 @@ class XmlAssertTest {
     Constructor<?> constructor =
         Class.forName(XmlAssert.class.getName() + "$1").getDeclaredConstructor(Map.class);
     constructor.setAccessible(true);
-    NamespaceContext context = (NamespaceContext) constructor.newInstance(PATHS.namespaces());
+    NamespaceContext context = (NamespaceContext) constructor.newInstance(LEGALDOCML.namespaces());
 
     assertThat(context.getPrefix("http://rechtsinformationen.bund.de/schema/ris/0.1")).isNull();
     assertThat(context.getPrefixes("http://rechtsinformationen.bund.de/schema/ris/0.1")).isNull();
