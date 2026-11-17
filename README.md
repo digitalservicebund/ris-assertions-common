@@ -25,10 +25,11 @@ The following workflows must exist there with an `on: workflow_call` trigger:
 - `.github/workflows/pipeline.yml`
 - `.github/workflows/publish-package.yml`
 
-The shared `pipeline.yml` builds, tests and checks licenses (`./gradlew build checkLicense jacocoTestReport`).
-On `main` it also generates Javadoc and pushes the test report, license report and Javadoc to ris-reports,
-stored under the calling repository's name (e.g. `test-reports/ris-assertions-common/tests`). This requires the
-`REPORTS_BUCKET_ACCESS_KEY_ID` and `REPORTS_BUCKET_SECRET_ACCESS_KEY` secrets in this repository.
+The shared `pipeline.yml` builds, tests and checks licenses (`./gradlew build checkLicense jacocoTestReport`)
+and generates an Allure test report (`./gradlew allureReport`). On `main` it also generates Javadoc and pushes the
+test report, Allure report, license report and Javadoc to ris-reports, stored under the calling repository's name
+(e.g. `test-reports/ris-assertions-common/allure-tests`). This requires the `REPORTS_BUCKET_ACCESS_KEY_ID` and
+`REPORTS_BUCKET_SECRET_ACCESS_KEY` secrets in this repository; they are also used to restore the Allure history.
 
 Nested reusable workflows referenced as `./.github/workflows/...` resolve to `ris-migration-common`, but local
 actions (`./.github/actions/...`) resolve to this repository's checkout, so the shared workflows must not use them.

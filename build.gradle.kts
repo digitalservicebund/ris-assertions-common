@@ -9,6 +9,7 @@ plugins {
   id("com.github.jk1.dependency-license-report") version "3.1.4"
   id("jacoco")
   id("checkstyle")
+  id("io.qameta.allure") version "4.3.1"
   `maven-publish`
 }
 
@@ -25,6 +26,8 @@ java {
   }
 }
 
+val allureVersion = "3.1.1"
+
 dependencyManagement {
   imports {
     mavenBom("org.springframework.boot:spring-boot-dependencies:4.1.1")
@@ -34,7 +37,18 @@ dependencyManagement {
 dependencies {
   api("org.assertj:assertj-core")
   testImplementation("org.springframework.boot:spring-boot-starter-test")
+  testImplementation(platform("io.qameta.allure:allure-bom:$allureVersion"))
+  testImplementation("io.qameta.allure:allure-junit-platform:$allureVersion")
   testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+}
+
+allure {
+  // Allure 2 CLI: Allure 3 downloadNode fails on macOS ARM (org.nodejs tarball resolved as .pom)
+  version.set("2.42.1")
+  adapter {
+    autoconfigure.set(false)
+    aspectjWeaver.set(false)
+  }
 }
 
 tasks.withType<Test> {
