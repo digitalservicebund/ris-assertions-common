@@ -21,22 +21,5 @@ on:
 
 jobs:
   pipeline:
-    uses: digitalservicebund/ris-migration-common/.github/workflows/pipeline.yml@2d5fa42bfbdde449514c20b82a0f49dc1c1f136e
+    uses: digitalservicebund/ris-migration-common/.github/workflows/pipeline.yml@ed3dcc711a0e70faa1bc9688020055d37ec72e7c
     secrets: inherit
-
-  license-check:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - name: Set up JDK
-        uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6.1.0
-        with:
-          java-version: "25"
-          distribution: "temurin"
-          cache: gradle
-      - name: Validate Gradle wrapper
-        uses: gradle/actions/wrapper-validation@8da46b539cd8fe6ab27ca75128919a18d757604c
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@8da46b539cd8fe6ab27ca75128919a18d757604c
-      - name: Check licenses
-        run: ./gradlew checkLicense

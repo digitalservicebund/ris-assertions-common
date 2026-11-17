@@ -25,8 +25,13 @@ The following workflows must exist there with an `on: workflow_call` trigger:
 - `.github/workflows/pipeline.yml`
 - `.github/workflows/publish-package.yml`
 
-`pipeline.yml` in `ris-migration-common` must reference `docs-generate.yml` using a full ref
-(not a relative path) since relative `uses:` paths are not allowed inside reusable workflows.
+The shared `pipeline.yml` builds, tests and checks licenses (`./gradlew build checkLicense jacocoTestReport`).
+On `main` it also generates Javadoc and pushes the test report, license report and Javadoc to ris-reports,
+stored under the calling repository's name (e.g. `test-reports/ris-assertions-common/tests`). This requires the
+`REPORTS_BUCKET_ACCESS_KEY_ID` and `REPORTS_BUCKET_SECRET_ACCESS_KEY` secrets in this repository.
+
+Nested reusable workflows referenced as `./.github/workflows/...` resolve to `ris-migration-common`, but local
+actions (`./.github/actions/...`) resolve to this repository's checkout, so the shared workflows must not use them.
 
 It also includes a workflow to update the Gradle metadata verification file, consisting of two parts:
 - `.github/workflows/update-verification-metadata.yml`, reusable workflow that updates `gradle/verification-metadata.xml`

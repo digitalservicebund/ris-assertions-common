@@ -10,12 +10,9 @@ on:
   workflow_dispatch:
 
 jobs:
-  pipeline:
-    uses: digitalservicebund/ris-migration-common/.github/workflows/pipeline.yml@2d5fa42bfbdde449514c20b82a0f49dc1c1f136e
-    secrets: inherit
-
+  # Runs the shared pipeline.yml before publishing; calling pipeline.yml here as well would
+  # run it twice in one workflow run and fail on duplicate artifact names.
   publish:
-    needs: [pipeline]
     uses: digitalservicebund/ris-migration-common/.github/workflows/publish-package.yml@2d5fa42bfbdde449514c20b82a0f49dc1c1f136e
     secrets: inherit
     permissions:
