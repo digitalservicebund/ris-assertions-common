@@ -21,5 +21,8 @@ on:
 
 jobs:
   pipeline:
-    uses: digitalservicebund/ris-migration-common/.github/workflows/pipeline.yml@5441239062397c15f4bca5d3dc5f2d8db3dfdf18
-    secrets: inherit
+    uses: digitalservicebund/ris-migration-common/.github/workflows/pipeline.yml@4982ad5b059cb93fff4e87c2ca55297ba97a839c
+    secrets:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      REPORTS_BUCKET_ACCESS_KEY_ID: ${{ secrets.REPORTS_BUCKET_ACCESS_KEY_ID }}
+      REPORTS_BUCKET_SECRET_ACCESS_KEY: ${{ secrets.REPORTS_BUCKET_SECRET_ACCESS_KEY }}

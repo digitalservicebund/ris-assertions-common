@@ -14,7 +14,10 @@ jobs:
   # run it twice in one workflow run and fail on duplicate artifact names.
   publish:
     uses: digitalservicebund/ris-migration-common/.github/workflows/publish-package.yml@2d5fa42bfbdde449514c20b82a0f49dc1c1f136e
-    secrets: inherit
+    secrets:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      REPORTS_BUCKET_ACCESS_KEY_ID: ${{ secrets.REPORTS_BUCKET_ACCESS_KEY_ID }}
+      REPORTS_BUCKET_SECRET_ACCESS_KEY: ${{ secrets.REPORTS_BUCKET_SECRET_ACCESS_KEY }}
     permissions:
       contents: read
       packages: write
