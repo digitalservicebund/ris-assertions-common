@@ -4,9 +4,9 @@ import org.gradle.api.plugins.quality.Checkstyle
 plugins {
   `java-library`
   id("io.spring.dependency-management") version "1.1.7"
-  id("org.sonarqube") version "7.5.0.8588"
-  id("com.diffplug.spotless") version "8.10.4"
-  id("com.github.jk1.dependency-license-report") version "3.1.4"
+  id("org.sonarqube") version "7.6.0.18749"
+  id("com.diffplug.spotless") version "8.11.0"
+  id("com.github.jk1.dependency-license-report") version "3.1.5"
   id("jacoco")
   id("checkstyle")
   id("io.qameta.allure") version "4.3.1"
@@ -30,7 +30,7 @@ val allureVersion = "3.1.1"
 
 dependencyManagement {
   imports {
-    mavenBom("org.springframework.boot:spring-boot-dependencies:4.1.1")
+    mavenBom("org.springframework.boot:spring-boot-dependencies:4.2.0")
   }
 }
 
