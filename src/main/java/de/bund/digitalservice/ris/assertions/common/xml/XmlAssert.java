@@ -93,7 +93,7 @@ public final class XmlAssert extends AbstractCharSequenceAssert<XmlAssert, Strin
    * @param path namespace-prefixed path from root
    * @return an assertion for the matched element
    */
-  public XmlElementAssert<XmlAssert> hasSingleElement(String path) {
+  public XmlElementAssert<XmlAssert> hasElementOnlyOnce(String path) {
     NodeList nodelist = evalXPath(toCleanedAbsoluteXPath(path), actual, paths.namespaces());
     assertThat(nodelist.getLength())
         .as("expected 1 element at path '%s' but found %d", path, nodelist.getLength())
@@ -166,7 +166,7 @@ public final class XmlAssert extends AbstractCharSequenceAssert<XmlAssert, Strin
    * @param path namespace-prefixed path from root
    * @return a builder for constraining and asserting no element matches
    */
-  public XmlContainsElementAssert<XmlAssert> containsNoElement(String path) {
+  public XmlContainsElementAssert<XmlAssert> doesNotContainElement(String path) {
     NodeList nodelist = evalXPath(toCleanedAbsoluteXPath(path), actual, paths.namespaces());
     return new XmlContainsElementAssert<>(nodelist, path, this, paths, true);
   }

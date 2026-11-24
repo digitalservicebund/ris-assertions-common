@@ -1,6 +1,6 @@
 # ris-assertions-common
 
-Common library for custom assertions.
+Common library for custom assertions. Currently provides XML assertions for LegalDocML (LDML) documents.
 
 ## Prerequisites
 
@@ -40,15 +40,18 @@ It also includes a workflow to update the Gradle metadata verification file, con
 
 ## XML Assertions
 
-### Usage
+### LDML documents
 
-Import the document-specific factory and use `assertThatXml`:
+`LegalDocMl` is the assertion entry point for LDML documents (Akoma Ntoso `akn` and RIS `ris` namespaces). It
+provides `assertThatXml` and XPath constants for common LDML elements (`AKN_META_X_PATH`,
+`AKN_IDENTIFICATION_X_PATH`, `AKN_CLASSIFICATION_X_PATH`, `RIS_META_X_PATH`, `RIS_REFERENZ_RECHTSPRECHUNG_X_PATH`).
+The namespace mapping is defined in `XmlDocumentPaths.LEGALDOCML`.
 
-```
-import static de.bund.digitalservice.ris.assertions.common.xml.BzstXml.assertThatXml;
+```java
+import static de.bund.digitalservice.ris.assertions.common.xml.LegalDocMl.assertThatXml;
 
-assertThatXml(xmlString)
-    .hasSingleElement(BzstXml.AKN_IDENTIFICATION_X_PATH)
+assertThatXml(ldmlString)
+    .hasElementOnlyOnce(LegalDocMl.AKN_IDENTIFICATION_X_PATH)
     .hasAttribute("value", "expected-uri");
 ```
 

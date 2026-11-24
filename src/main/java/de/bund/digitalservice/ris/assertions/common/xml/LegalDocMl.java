@@ -24,10 +24,10 @@ public final class LegalDocMl {
   private LegalDocMl() {}
 
   /**
-   * Creates an assertion for the given BZST XML string.
+   * Creates an assertion for the given LDML XML string.
    *
    * @param xml the XML string to assert
-   * @return a new {@link XmlAssert} configured with BZST namespaces
+   * @return a new {@link XmlAssert} configured with LDML namespaces
    */
   public static XmlAssert assertThatXml(String xml) {
     return new XmlAssert(xml, XmlDocumentPaths.LEGALDOCML);

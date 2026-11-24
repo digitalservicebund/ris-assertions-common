@@ -52,7 +52,7 @@ public final class XmlElementsAssert {
    *
    * @return a builder for constraining and asserting no element matches
    */
-  public XmlContainsElementAssert<XmlElementsAssert> containsNoElement() {
+  public XmlContainsElementAssert<XmlElementsAssert> doesNotContainElement() {
     return new XmlContainsElementAssert<>(nodelist, path, this, paths, true);
   }
 

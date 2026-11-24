@@ -40,7 +40,7 @@ public final class XmlContainsElementAssert<P> {
 
   /**
    * Constrains elements to those with all {@code attrs} at the given values, then fires the
-   * assertion (≥1 match for {@code containsElement}, 0 matches for {@code containsNoElement}).
+   * assertion (≥1 match for {@code containsElement}, 0 matches for {@code doesNotContainElement}).
    * Combined with any prior constraints.
    *
    * @param attrs attribute name→value pairs to match
