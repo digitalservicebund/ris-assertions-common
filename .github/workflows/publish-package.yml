@@ -13,7 +13,7 @@ jobs:
   # Runs the shared pipeline.yml before publishing; calling pipeline.yml here as well would
   # run it twice in one workflow run and fail on duplicate artifact names.
   publish:
-    uses: digitalservicebund/ris-migration-common/.github/workflows/publish-package.yml@2d5fa42bfbdde449514c20b82a0f49dc1c1f136e
+    uses: digitalservicebund/ris-migration-common/.github/workflows/publish-package.yml@4982ad5b059cb93fff4e87c2ca55297ba97a839c
     secrets:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       REPORTS_BUCKET_ACCESS_KEY_ID: ${{ secrets.REPORTS_BUCKET_ACCESS_KEY_ID }}
